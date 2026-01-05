@@ -1,0 +1,10 @@
+[project]
+name = "pynote"
+version = "0.1.0"
+dependencies = [
+    "typer",
+    "pydantic",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,26 @@
+name: Python Script Robot
+
+on:
+  push:
+    branches: [ "master", "main" ]  # Triggers on push to either master or main
+  workflow_dispatch:               # Allows you to run it manually from GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest         # The "Robot" uses a standard Linux computer
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4   # Downloads your code onto the robot
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'    # Installs the Python "Waiter"
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+                                    # Installs libraries if the file exists
+
+      - name: Run Script
+        run: python src/pynote/main/main.py
