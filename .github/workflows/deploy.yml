@@ -22,4 +22,4 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run Script
-        run: python src/pynote/main/main.py
+        run: python src/pynote/main/main.py "My Test Title" "This is my test content"
