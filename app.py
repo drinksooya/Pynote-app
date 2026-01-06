@@ -1,22 +1,43 @@
 import streamlit as st
-from src.pynote.main.main import add, DB_FILE  # We are importing the 'add' command from your file
+import json
+import os
+from src.pynote.main.main import add  # Your existing logic
 
-st.set_page_config(page_title="PyNote Web", page_icon="📓")
+st.set_page_config(page_title="PyNote Web", page_icon="📓", layout="wide")
 
-st.title("📓 PyNote Web")
-st.write("This is the Web Home for your Typer application.")
+# --- SIDEBAR: VIEW NOTES ---
+st.sidebar.title("🗂️ Saved Notes")
+DB_FILE = "notes_db.json"
 
-# Web input fields
-title = st.text_input("Note Title")
-content = st.text_area("Note Content")
+if os.path.exists(DB_FILE):
+    with open(DB_FILE, "r") as f:
+        notes = json.load(f)
 
-if st.button("Add Note"):
-    if title and content:
-        # We call the 'add' function directly from your main.py
-        try:
-            add(title, content)
-            st.success(f"Success! Note '{title}' added to {DB_FILE if 'DB_FILE' in locals() else 'the database'}.")
-        except Exception as e:
-            st.error(f"Error: {e}")
+    if notes:
+        for note in reversed(notes):  # Show newest first
+            with st.sidebar.expander(f"📌 {note['title']}"):
+                st.write(note['content'])
+                st.caption(f"ID: {note['id']}")
     else:
-        st.warning("Please enter both a title and content.")
+        st.sidebar.info("No notes saved yet.")
+else:
+    st.sidebar.info("Database file not found.")
+
+# --- MAIN AREA: ADD NOTES ---
+st.title("📓 PyNote Web")
+st.write("Add a new note to your collection.")
+
+with st.container():
+    title = st.text_input("Note Title")
+    content = st.text_area("Note Content", height=150)
+
+    if st.button("Add Note", use_container_width=True):
+        if title and content:
+            try:
+                add(title, content)
+                st.success(f"Added '{title}'!")
+                st.rerun()  # This refreshes the app so the new note shows up in the sidebar
+            except Exception as e:
+                st.error(f"Error: {e}")
+        else:
+            st.warning("Both fields are required.")
