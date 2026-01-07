@@ -38,17 +38,23 @@ def save_notes(notes: List[dict]):
     except Exception as e:
         logging.error(f"Could not save note! Error: {e}") # Log an error if saving fails
 
+
 @app.command()
-def add(title: str, content: str):
-    logging.info(f"Attempting to add note: {title}") # Log the start of an action
+def add(title: str, content: str, key: str = "default"):
+    logging.info(f"Attempting to add note: {title} with key privacy")  # Log the start of an action
     notes = load_notes()
     new_id = len(notes) + 1
-    new_note = Note(id=new_id, title=title, content=content)
 
-    notes.append(new_note.model_dump())
+    # We add the key to the note data so it can be filtered later
+    new_note = Note(id=new_id, title=title, content=content)
+    note_data = new_note.model_dump()
+    note_data["key"] = key  # Assign the secret key to the note
+
+    notes.append(note_data)
     save_notes(notes)
-    typer.echo(f"Success! Note #{new_id} added.")
+    typer.echo(f"Success! Note #{new_id} added to your private vault.")
+
 
 if __name__ == "__main__":
-    logging.info("App started") # Track when the app is initialized
+    logging.info("App started")  # Track when the app is initialized
     app()
