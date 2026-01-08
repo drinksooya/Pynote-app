@@ -4,7 +4,6 @@ from pynote.main.main import app, DB_FILE
 
 runner = CliRunner()
 
-
 def test_add_note_flow():
     # 1. SETUP
     if os.path.exists(DB_FILE):
