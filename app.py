@@ -62,14 +62,13 @@ with st.container():
 
     if st.button("Add Note", use_container_width=True):
         if title and content:
-            try:
-                # This logic replaces your old 'add()' function from main.py
-                data = {"title": title, "content": content}
-                supabase.table("notes").insert(data).execute()
+            # This "with" block shows a loading message while the code inside it runs
+            with st.spinner("Uploading to cloud..."):
+                try:
+                    data = {"title": title, "content": content}
+                    supabase.table("notes").insert(data).execute()
 
-                st.success(f"Successfully saved '{title}' to the cloud!")
-                st.rerun()
-            except Exception as e:
-                st.error(f"Error saving to cloud: {e}")
-        else:
-            st.warning("Both fields are required.")
+                    st.success(f"Successfully saved '{title}' to the cloud!")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error saving to cloud: {e}")
