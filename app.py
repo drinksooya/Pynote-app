@@ -3,12 +3,11 @@ from supabase import create_client, Client
 
 # 1. SETUP SUPABASE CONNECTION
 # Paste your actual URL and Key between the quotes below
-url: str = "https://xmafxwjwizaomwglooaa.supabase.co"
-key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtYWZ4d2p3aXphb213Z2xvb2FhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3ODIzOTMsImV4cCI6MjA4MzM1ODM5M30.NrRfLuZc2qPIhnP6tPUqIpGov9M9xfX31ql7U1efwYs"
+url: str = st.secrets["SUPABASE_URL"]
+key: str = st.secrets["SUPABASE_KEY"]
 supabase: Client = create_client(url, key)
 
 st.set_page_config(page_title="PyNote Web", page_icon="📓", layout="wide")
-
 
 # --- GATEKEEPER LOGIC ---
 def password_entered():
@@ -18,8 +17,6 @@ def password_entered():
         del st.session_state["password_input"]
     else:
         st.session_state["password_correct"] = False
-
-
 def check_password():
     """Returns True if the user is authenticated."""
     if st.session_state.get("password_correct", False):

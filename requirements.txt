@@ -15,6 +15,7 @@ docker==7.1.0
 fsspec==2025.12.0
 gitdb==4.0.12
 GitPython==3.1.46
+gunicorn==23.0.0
 h11==0.16.0
 h2==4.3.0
 hpack==4.1.0
@@ -51,7 +52,7 @@ pydeck==0.9.1
 Pygments==2.19.2
 pyiceberg==0.10.0
 PyJWT==2.10.1
--e git+https://github.com/drinksooya/Pynote-app.git@9e8be7968ce3339d49646bdb1eff8edb7df827e0#egg=pynote
+-e git+https://github.com/drinksooya/Pynote-app.git@3788403bd9f380cb7f443dd32b8eed4231c440f3#egg=pynote
 pyparsing==3.3.1
 pyroaring==1.0.3
 pytest==9.0.2
