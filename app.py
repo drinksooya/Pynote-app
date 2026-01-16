@@ -63,7 +63,7 @@ with st.container():
     if st.button("Add Note", use_container_width=True):
         if title and content:
             # This "with" block shows a loading message while the code inside it runs
-            with st.spinner("Uploading to cloud..."):
+            with st.spinner("Uploading to cloud...") as _:
                 try:
                     data = {"title": title, "content": content}
                     supabase.table("notes").insert(data).execute()
