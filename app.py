@@ -64,6 +64,19 @@ try:
             with st.sidebar.expander(f"📌 {note['title']}"):
                 st.write(note['content'])
                 st.caption(f"Saved at: {note['created_at']}")
+
+                # This is the new Delete Button
+                # We use a unique 'key' so Streamlit doesn't get confused between buttons
+                if st.button(f"🗑️ Delete", key=f"del_{note['id']}"):
+                    try:
+                        with st.spinner("Deleting..."):
+                            # Tell Supabase to delete the row where the ID matches
+                            supabase.table("notes").delete().eq("id", note["id"]).execute()
+
+                        st.sidebar.success("Note deleted!")
+                        st.rerun()  # Refresh to update the list immediately
+                    except Exception as e:
+                        st.sidebar.error(f"Could not delete: {e}")
     else:
         st.sidebar.info("Your cloud vault is empty.")
 except Exception as e:
